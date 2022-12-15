@@ -1,4 +1,3 @@
-Nginx:
+Apply every config file in the k8s directory:
 
-- directs all requests to the `/` route to the React app
-- directs all requests to the `/api` route to the express server
+`kubectl apply -f k8s`
