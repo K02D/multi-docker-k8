@@ -12,8 +12,24 @@ spec:
       labels:
         component: postgres
     spec:
+      volumes:
+        # Get storage that meets the requirements in database-persistent-volume-claim
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: database-persistent-volume-claim
       containers:
         - name: postgres
           image: postgres
           ports:
             - containerPort: 5432
+          volumeMounts:
+            - name: postgres-storage
+              # data in /var/lib/postgresql/data inside the container is stored in the postgres folder in the PVC
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pgpassword
+                  key: PGPASSWORD

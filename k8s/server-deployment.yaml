@@ -17,3 +17,22 @@ spec:
           image: k02d/multi-server
           ports:
             - containerPort: 5000
+          env:
+            - name: REDIS_HOST
+              value: redis_cluster_ip_service
+            - name: REDIS_PORT
+              value: "6379"
+            - name: PGUSER
+              value: postgres
+            - name: PGHOST
+              value: postgres_cluster_ip_service
+            - name: PGPORT
+              value: "5432"
+            - name: PGDATABASE
+              value: postgres
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  # These come from the `kubectl create secret` command
+                  name: pgpassword
+                  key: PGPASSWORD
